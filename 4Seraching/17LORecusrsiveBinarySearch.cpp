@@ -4,6 +4,12 @@ using namespace std;
 
 int binarySearch(int arr[], int start, int end, int find)
 {
+
+    if (start > end)
+    {
+        return -1;
+    }
+
     int mid = (start + end) / 2;
 
     if (arr[mid] > find)
