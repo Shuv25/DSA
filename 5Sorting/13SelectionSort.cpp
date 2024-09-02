@@ -2,35 +2,36 @@
 
 using namespace std;
 
-void BubbleSort(int n, int *arr)
+void selectionSort(int *arr, int n)
 {
-    for (int i = 0; i < n - 1; i++)
+    for (int i = 0; i < n; i++)
     {
-        for (int j = 0; j < n - i - 1; j++)
+        int min_index = i;
+        for (int j = i + 1; j < n; j++)
         {
-            if (arr[j] > arr[j + 1])
+            if (arr[j] < arr[min_index])
             {
-                swap(arr[j], arr[j + 1]);
+                min_index = j;
             }
         }
+        swap(arr[i], arr[min_index]);
     }
 }
 
 int main()
 {
     int n;
-    cout << "Enter the size of the array:";
+    cout << "Size?";
     cin >> n;
 
     int *arr = new int[n];
-
-    cout << "Enter the eleents of the array:";
+    cout << "Enter elements:";
     for (int i = 0; i < n; i++)
     {
         cin >> arr[i];
     }
 
-    BubbleSort(n, arr);
+    selectionSort(arr, n);
 
     for (int i = 0; i < n; i++)
     {
@@ -39,4 +40,5 @@ int main()
     cout << endl;
 
     delete[] arr;
+    return 0;
 }

@@ -2,54 +2,63 @@
 
 using namespace std;
 
-int partition(int s, int e, int *arr)
+void merge(int *arr, int low, int high, int m)
 {
-    int front = arr[s];
-    int cnt = 0;
-    for (int i = s + 1; i <= e; i++)
+    int lsize = m - low + 1;
+    int rsize = high - m;
+
+    int *larr = new int[lsize];
+    int *rarr = new int[rsize];
+
+    int k = low;
+
+    for (int i = 0; i < lsize; i++)
     {
-        if (arr[i] <= front)
+        larr[i++] = arr[k++];
+    }
+    for (int i = 0; i < rsize; i++)
+    {
+        rarr[i++] = arr[k++];
+    }
+
+    k = low;
+    int i = 0;
+    int j = 0;
+
+    while (i < lsize && j < rsize)
+    {
+        if (larr[i] <= rarr[j])
         {
-            cnt++;
+            arr[k++] = larr[i++];
+        }
+        else
+        {
+            arr[k++] = rarr[j++];
         }
     }
 
-    int pindex = s + cnt;
-
-    int temp = arr[s];
-    arr[s] = arr[pindex];
-    arr[pindex] = temp;
-
-    int i = s;
-    int j = e;
-
-    while (i < pindex && j > pindex)
+    while (i < lsize)
     {
-        while (arr[i] < front)
-        {
-            i++;
-        }
-        while (arr[j] > front)
-        {
-            j--;
-        }
-        if (i < pindex && j > pindex)
-        {
-            swap(arr[i++], arr[j--]);
-        }
+        arr[k++] = larr[i++];
     }
+    while (j < rsize)
+    {
+        arr[k++] = rarr[j++];
+    }
+
+    delete[] larr;
+    delete[] rarr;
 }
 
-void quickSort(int s, int e, int *arr)
+void mergesort(int *arr, int low, int high)
 {
-    if (s >= e)
+    if (low < high)
     {
-        return;
+        int m = (low + high) / 2;
+        mergesort(arr, low, m);
+        mergesort(arr, m + 1, high);
+        merge(arr, low, high, m);
     }
-    int p = partition(s, e, arr);
-
-    quickSort(s, p - 1, arr);
-    quickSort(p + 1, e, arr);
 }
 
 int main()
@@ -59,17 +68,18 @@ int main()
     cin >> n;
 
     int *arr = new int[n];
-
     cout << "Elements:";
     for (int i = 0; i < n; i++)
     {
         cin >> arr[i];
     }
 
-    quickSort(0, n - 1, arr);
+    mergesort(arr, 0, n - 1);
 
     for (int i = 0; i < n; i++)
     {
         cout << arr[i] << " ";
     }
+
+    delete[] arr;
 }
