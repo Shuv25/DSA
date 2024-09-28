@@ -20,9 +20,9 @@ private:
     int size;
     Node **table;
 
-    int hashkey(int key)
+    int key(int ele)
     {
-        return key % size;
+        return ele % size;
     }
 
 public:
@@ -38,18 +38,15 @@ public:
 
     void insert(int ele)
     {
-        int index = hashkey(ele);
-
+        int index = key(ele);
         Node *newnode = new Node(ele);
-
         newnode->ptr = table[index];
-
         table[index] = newnode;
     }
 
     bool search(int sele)
     {
-        int index = hashkey(sele);
+        int index = key(sele);
         Node *curr = table[index];
         while (curr)
         {
@@ -57,7 +54,6 @@ public:
             {
                 return true;
             }
-
             curr = curr->ptr;
         }
 
@@ -66,7 +62,7 @@ public:
 
     void del(int dele)
     {
-        int index = hashkey(dele);
+        int index = key(dele);
         Node *curr = table[index];
         Node *prev = nullptr;
 
@@ -82,7 +78,6 @@ public:
                 {
                     table[index] = curr->ptr;
                 }
-
                 delete curr;
                 return;
             }
@@ -94,16 +89,19 @@ public:
 
 int main()
 {
-    Hashtable ht(10);
+    Hashtable ht(5);
 
-    ht.insert(45);
-    ht.insert(55);
-    ht.insert(95);
+    ht.insert(5);
+    ht.insert(7);
+    ht.insert(9);
+    ht.insert(4);
 
-    cout << (ht.search(45) ? "Found" : "Not Found") << endl;
-    cout << (ht.search(78) ? "Found" : "Not Found") << endl;
+    cout << (ht.search(9) ? "Found" : "Not Found") << endl;
+    cout << (ht.search(7) ? "Found" : "Not Found") << endl;
 
-    ht.del(45);
+    ht.del(9);
+    ht.del(7);
 
-    cout << (ht.search(45) ? "Found" : "Not Found") << endl;
+    cout << (ht.search(9) ? "Found" : "Not Found") << endl;
+    cout << (ht.search(7) ? "Found" : "Not Found") << endl;
 }

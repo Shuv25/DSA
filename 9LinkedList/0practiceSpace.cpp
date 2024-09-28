@@ -1,110 +1,90 @@
 #include <iostream>
-#include <string>
 
 using namespace std;
 
-struct Song
+struct Node
 {
-    string title;
-    string artist;
-    int duration;
-    Song *next;
-
-    Song(string t, string a, int d)
+    int data;
+    Node *ptr;
+    Node(int d)
     {
-        title = t;
-        artist = a;
-        duration = d;
-        next = nullptr;
+        data = d;
+        ptr = nullptr;
     }
 };
 
-Song *insertEnd(Song *head, string t, string a, int d)
+Node *insertBeg(Node *head, int data)
 {
-    Song *temp = new Song(t, a, d);
+    Node *temp = new Node(data);
+    temp->ptr = head;
+    return temp;
+}
 
+Node *insertEnd(Node *head, int data)
+{
+    Node *temp = new Node(data);
     if (head == nullptr)
     {
+        head = temp;
+        return head;
+    }
+    Node *curr = head;
+    while (curr->ptr != nullptr)
+    {
+        curr = curr->ptr;
+    }
+    curr->ptr = temp;
+    return head;
+}
+
+Node *insertPos(Node *head, int pos, int data)
+{
+    Node *temp = new Node(data);
+    if (pos == 1)
+    {
+        temp->ptr = head;
         return temp;
     }
 
-    Song *curr = head;
-    while (curr->next != nullptr)
+    Node *curr = head;
+
+    for (int i = 1; i < pos - 1 && curr != nullptr; i++)
     {
-        curr = curr->next;
+        curr = curr->ptr;
     }
-    curr->next = temp;
-    return head;
-}
-
-Song *removeSong(Song *head, string title)
-{
-    if (head == nullptr)
-        return nullptr;
-
-    if (head->title == title)
+    if (curr == nullptr)
     {
-        Song *temp = head;
-        head = head->next;
-        delete temp;
         return head;
     }
 
-    Song *curr = head;
-    while (curr->next != nullptr && curr->next->title != title)
-    {
-        curr = curr->next;
-    }
-
-    if (curr->next != nullptr)
-    {
-        Song *temp = curr->next;
-        curr->next = curr->next->next;
-        delete temp;
-    }
+    temp->ptr = curr->ptr;
+    curr->ptr = temp;
     return head;
 }
 
-void displayPlaylist(Song *head)
+Node *printlist(Node *head)
 {
-    Song *curr = head;
-    while (curr != nullptr)
+    if (head == nullptr)
     {
-        cout << "Title: " << curr->title << ", Artist: " << curr->artist << ", Duration: " << curr->duration << " seconds" << endl;
-        curr = curr->next;
+        return head;
     }
-}
-
-int getTotalDuration(Song *head)
-{
-    int totalDuration = 0;
-    Song *curr = head;
-    while (curr != nullptr)
-    {
-        totalDuration += curr->duration;
-        curr = curr->next;
-    }
-    return totalDuration;
+    cout << head->data << " ";
+    printlist(head->ptr);
 }
 
 int main()
 {
-    Song *playlist = nullptr;
+    Node *head = nullptr;
+    head = insertBeg(head, 30);
+    head = insertBeg(head, 40);
+    head = insertBeg(head, 50);
 
-    playlist = insertEnd(playlist, "Song 1", "Artist 1", 210);
-    playlist = insertEnd(playlist, "Song 2", "Artist 2", 180);
-    playlist = insertEnd(playlist, "Song 3", "Artist 3", 240);
+    head = insertEnd(head, 60);
+    head = insertEnd(head, 70);
+    head = insertEnd(head, 80);
 
-    cout << "Playlist:" << endl;
-    displayPlaylist(playlist);
+    head = insertPos(head, 2, 110);
+    head = insertPos(head, 3, 100);
 
-    playlist = removeSong(playlist, "Song 2");
-
-    cout << "\nPlaylist after removing 'Song 2':" << endl;
-    displayPlaylist(playlist);
-
-    int totalDuration = getTotalDuration(playlist);
-    cout << "\nTotal Duration of Playlist: " << totalDuration << " seconds" << endl;
-
-    return 0;
+    printlist(head);
 }

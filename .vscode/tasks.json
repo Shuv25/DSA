@@ -1,0 +1,28 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "type": "cppbuild",
+            "label": "C/C++: g++.exe build active file",
+            "command": "C:\\MinGW\\bin\\g++.exe", // Ensure this path is correct
+            "args": [
+                "-fdiagnostics-color=always", // Provides colored diagnostics (warnings/errors)
+                "-g", // Include debugging information
+                "${file}", // The current file being compiled
+                "-o", // Output flag
+                "${fileDirname}\\${fileBasenameNoExtension}.exe" // Output executable file
+            ],
+            "options": {
+                "cwd": "${fileDirname}" // Sets the working directory to the file's directory
+            },
+            "problemMatcher": [
+                "$gcc" // Helps VS Code understand compiler errors and warnings
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true // This marks this task as the default build task
+            },
+            "detail": "compiler: C:\\MinGW\\bin\\g++.exe"
+        }
+    ]
+}
