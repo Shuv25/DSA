@@ -2,62 +2,78 @@
 
 using namespace std;
 
-struct stack
+struct Node
 {
-    int cap;
-    int top;
-    int *arr;
-    stack(int c)
+    int data;
+    Node *ptr;
+    Node(int d)
     {
-        cap = c;
-        arr = new int[cap];
-        top = -1;
+        data = d;
+        ptr = nullptr;
     }
-    int sizee()
+};
+
+struct Mystack
+{
+    Node *head;
+    int size;
+    Mystack()
     {
-        return top + 1;
-    }
-    bool isempty()
-    {
-        return top == -1;
-    }
-    bool isfull()
-    {
-        return top == cap;
+        size = 0;
+        head = nullptr;
     }
     void push(int ele)
     {
-        if (isfull())
-        {
-            cout << "Stack is full" << endl;
-        }
-        top++;
-        arr[top] = ele;
+        Node *temp = new Node(ele);
+        temp->ptr = head;
+        head = temp;
+        size++;
     }
     int pop()
     {
-        if (isempty())
+        if (head == nullptr)
         {
-            cout << "Stack id empty" << endl;
+            return -1;
         }
-        int res = arr[top];
-        top--;
+        int res = head->data;
+        Node *temp = head;
+        head = head->ptr;
+        delete temp;
+        size--;
         return res;
+    }
+    int sizee()
+    {
+        return size;
+    }
+    int peek()
+    {
+        if (head == nullptr)
+        {
+            return -1;
+        }
+        return head->data;
+    }
+    bool isempty()
+    {
+        if (head == nullptr)
+        {
+            return true;
+        }
+        return false;
     }
 };
 
 int main()
 {
-    stack s(5);
+    Mystack s;
     s.push(30);
     s.push(40);
     s.push(50);
-    s.push(60);
-    s.push(70);
-    cout << s.sizee() << endl;
-    cout << s.pop() << endl;
-    cout << s.pop() << endl;
-    s.push(70);
-    s.push(80);
-    cout << s.sizee() << endl;
+    cout << "Size of stack: " << s.sizee() << endl;
+    cout << "Top element: " << s.peek() << endl;
+    cout << "Popped element: " << s.pop() << endl;
+    cout << "Popped element: " << s.pop() << endl;
+    cout << "Popped element: " << s.pop() << endl;
+    cout << "Is stack empty? " << s.isempty() << endl;
 }
